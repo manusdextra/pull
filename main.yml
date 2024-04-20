@@ -2,13 +2,12 @@
 - name: Debug
   hosts: localhost
   connection: local
-  # become: true
-  # become_method: doas
+  vars_files: secrets.yml
 
   tasks:
     - name: Send a message
       ansible.builtin.debug:
-        msg: "hello"
+        var: non_root_user
 
     # TODO: Pacman config
     #
