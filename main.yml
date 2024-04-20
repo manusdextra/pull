@@ -9,3 +9,24 @@
     - name: Send a message
       ansible.builtin.debug:
         msg: "hello"
+
+    # TODO: Pacman config
+    #
+    # Pulling list of packages
+    # Installing AUR helper
+    # Setting up hooks to write package lists
+    # (needs a centralised location)
+
+    # TODO: List of hosts
+    #
+    # figure out how/where to centralise SSH config
+
+    # TODO: Fileshares
+    #
+    # figure out how to mount SMB shares from a central
+    # fileserver
+
+    # TODO: Hardware
+    #
+    # Trackpad, keyboard etc.
+    # Machine specific stuff
