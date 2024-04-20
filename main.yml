@@ -1,13 +1,71 @@
 ---
-- name: Debug
+- name: Base configuration for interactive hosts
   hosts: localhost
   connection: local
   vars_files: secrets.yml
 
   tasks:
-    - name: Send a message
-      ansible.builtin.debug:
-        var: non_root_user
+    # - name: Send a message
+    #   ansible.builtin.debug:
+    #     var: non_root_user
+
+    - name: Install base set of packages
+      community.general.pacman:
+        name:
+          - opendoas
+          - tmux
+          - nnn
+          - git
+          - neovim
+          - stow
+          - bat
+        state: latest
+        update_cache: true
+      become: true
+
+    - name: Setup Doas
+      ansible.builtin.template:
+        src: "templates/doas.conf.j2"
+        dest: "/etc/doas.conf"
+        mode: "0600"
+        validate: "doas -C %s"
+      become: true
+
+    - name: Check for oKSH
+      vars:
+        - oksh_exists: ""
+      ansible.builtin.shell:
+        cmd: command -v oksh
+      register: oksh_exists
+      changed_when: false
+      ignore_errors: true
+
+    - name: Download oKSH
+      ansible.builtin.git:
+        repo: "https://github.com/ibara/oksh"
+        dest: "/home/{{ non_root_user }}/oksh"
+        clone: yes
+      when: oksh_exists.rc != 0
+
+    - name: Install oKSH
+      ansible.builtin.shell:
+        cmd: "cd /home/{{ non_root_user }}/oksh && ./configure && make && make install clean"
+      become: true
+      when: oksh_exists.rc != 0
+
+    - name: Add oKSH to /etc/shells
+      ansible.builtin.lineinfile:
+        path: /etc/shells
+        regex: "^/usr/local/bin/oksh"
+        line: "/usr/local/bin/oksh"
+        state: present
+      become: true
+
+    - name: Set okSH as default shell for non-root user
+      ansible.builtin.user:
+        name: "{{ non_root_user }}"
+        shell: "/usr/local/bin/oksh"
+      become: true
 
     # TODO: Pacman config
     #
