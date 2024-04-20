@@ -2,8 +2,8 @@
 - name: Debug
   hosts: localhost
   connection: local
-  become: true
-  become_method: doas
+  # become: true
+  # become_method: doas
 
   tasks:
     - name: Send a message
