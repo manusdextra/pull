@@ -1,0 +1,6 @@
+permit persist keepenv :wheel
+permit nopass "{{ non_root_user }}" cmd dmesg
+permit nopass "{{ non_root_user }}" cmd pacman
+permit nopass "{{ non_root_user }}" cmd reboot
+permit nopass "{{ non_root_user }}" cmd systemctl
+permit nopass "{{ non_root_user }}" cmd tailscale
