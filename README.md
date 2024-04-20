@@ -10,4 +10,5 @@ I'd quite like to be able to use Ansible to take a new machine from a base insta
 
 ## Things to figure out
 
+- How to reuse roles between push and pull playbooks
 - How to handle centralising SSH configuration
