@@ -1,5 +1,18 @@
 ---
 - name: Base configuration for interactive hosts
+  #
+  # Prerequisites:
+  #
+  # Currently, the vault_pass_file is a wrapper script that calls rbw to 
+  # retrieve the vault password. Therefore, rbw needs to be already installed
+  # and its vault unlocked. This can be done on the command line, but I haven't
+  # explored non-interactive options yet---I'm not sure I want/need to, atm I'm
+  # happy to run the command manually as it involves updating the packages which
+  # on a rolling release distro is a regular action anyway.
+  #
+  # The non_root_user referred to in secrets.yml must be exisiting already,
+  # and added to /etc/sudoers
+  # 
   hosts: localhost
   connection: local
   vars_files: secrets.yml
